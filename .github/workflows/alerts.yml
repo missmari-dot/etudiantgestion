@@ -1,0 +1,16 @@
+name: Monitoring Alert
+
+on:
+  workflow_run:
+    workflows: ["CI - GestionEtudiant Service"]
+    types:
+      - completed
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔔 Envoyer une alerte en cas d'échec
+        if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"🚨 Le pipeline CI/CD a échoué ! Vérifiez les logs !"}' ${{ secrets.SLACK_WEBHOOK }}
