@@ -1,4 +1,3 @@
-FROM ubuntu:latest
-LABEL authors="HP"
-
-ENTRYPOINT ["top", "-b"]
+FROM openjdk:17
+COPY target/*.jar app.jar
+ENTRYPOINT ["java", "-jar", "/app.jar"]

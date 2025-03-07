@@ -1,0 +1,17 @@
+#version: '3.8'
+
+services:
+  etudiantgestion-service:
+    image: mariama640/etudiantgestion:latest
+    container_name: etudiantgestion
+    restart: always
+    ports:
+      - "8085:8085"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge
