@@ -1,0 +1,12 @@
+[33m67e33e3[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{0}: reset: moving to origin/main
+[33m78018b2[m HEAD@{1}: commit (merge): Gestion Etudiant pipeline container
+[33m351f9b7[m HEAD@{2}: commit: Gestion Etudiant pipeline container
+[33m6589d36[m HEAD@{3}: checkout: moving from main to main
+[33m6589d36[m HEAD@{4}: branch: Reset to origin/main
+[33m6589d36[m HEAD@{5}: pull origin main --rebase (finish): returning to refs/heads/main
+[33m6589d36[m HEAD@{6}: pull origin main --rebase (pick): config du pipeline
+[33m65b9ff4[m HEAD@{7}: pull origin main --rebase (start): checkout 65b9ff4239f3a27b11c52960050ad8e666967650
+[33m486ae97[m HEAD@{8}: commit: config du pipeline
+[33mc3e7108[m HEAD@{9}: commit: config du pipeline
+[33me468492[m HEAD@{10}: commit: config du pipeline
+[33m8b73e48[m HEAD@{11}: commit (initial): config du pipeline
