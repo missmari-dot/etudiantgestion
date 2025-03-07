@@ -73,7 +73,7 @@ jobs:
           docker build -t $IMAGE_TAG .
           docker push $IMAGE_TAG
 
-  deploy:
+  deploy-k8s:
     needs: docker
     runs-on: ubuntu-latest
     env:
@@ -83,16 +83,35 @@ jobs:
       - name: 🛎 Cloner le repo
         uses: actions/checkout@v3
 
-      - name: 🚀 Déploiement selon l'environnement
+
+      - name: 📥 Installer `kubectl`
         run: |
-          TAG=$(echo $GITHUB_REF | sed 's/refs\/heads\///')
-          if [[ "$TAG" == "master" ]]; then
-            echo "Déploiement en DEV sur Docker..."
-            docker run -d -p 8080:8080 ${{ env.IMAGE_NAME }}:master
-          elif [[ "$TAG" == "staging" ]]; then
-            echo "Déploiement en STAGING sur Docker..."
-            docker run -d -p 8080:8080 ${{ env.IMAGE_NAME }}:staging
-          elif [[ "$TAG" == "preprod" || "$TAG" == "prod" ]]; then
-            echo "Déploiement en K8s (non configuré pour l’instant)"
-            # Ici, on ajoutera plus tard le script pour déployer sur Kubernetes
-          fi
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          chmod +x kubectl
+          sudo mv kubectl /usr/local/bin/
+
+      - name: 🔑 Configurer AWS CLI
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set region eu-north-1
+
+      - name: 🔑 Mettre à jour le contexte Kubernetes pour EKS
+        run: |
+          aws eks update-kubeconfig --name etudiant-gestion-cluster --region eu-north-1
+          kubectl config current-context
+
+      - name: 🔑 Configurer l'accès à Kubernetes
+        run: |
+          echo "${{ secrets.KUBECONFIG }}" | base64 --decode > kubeconfig.yaml
+          export KUBECONFIG=kubeconfig.yaml
+          kubectl config use-context arn:aws:eks:eu-north-1:851725523231:cluster/etudiant-gestion-cluster
+
+      - name: 🔍 Vérifier la connexion au cluster EKS
+        run: kubectl get nodes
+
+      - name: 🚀 Déployer sur Kubernetes (Preprod)
+        run: |
+          kubectl apply -f k8s/namespace.yaml
+          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/service.yaml

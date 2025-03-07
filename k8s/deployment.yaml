@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: etudiantgestion
+  namespace: preprod
+  labels:
+    app: etudiantgestion
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: etudiantgestion
+  template:
+    metadata:
+      name: etudiantgestion
+      labels:
+        app: etudiantgestion
+    spec:
+      containers:
+        - name: etudiantgestion
+          image: mariama640/etudiantgestion
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              protocol: TCP
+      restartPolicy: Always
+      
