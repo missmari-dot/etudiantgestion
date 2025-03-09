@@ -129,4 +129,21 @@ jobs:
         run: |
           kubectl get pods -n monitoring
           kubectl get services -n monitoring
+          if [[ "$TAG" == "master" ]]; then
+            kubectl apply -f k8s/namespace.yaml
+            kubectl apply -f k8s/deployment.yaml
+            kubectl apply -f k8s/service.yaml
+          elif [[ "$TAG" == "staging" ]]; then
+            kubectl apply -f k8s/staging/namespace.yaml
+            kubectl apply -f k8s/staging/deployment.yaml
+            kubectl apply -f k8s/staging/service.yaml
+          elif [[ "$TAG" == "preprod" ]]; then
+            kubectl apply -f k8s/preprod/namespace.yaml
+            kubectl apply -f k8s/preprod/deployment.yaml
+            kubectl apply -f k8s/preprod/service.yaml
+          elif [[ "$TAG" == "prod" ]]; then
+            kubectl apply -f k8s/namespace.yaml
+            kubectl apply -f k8s/deployment.yaml
+            kubectl apply -f k8s/service.yaml
+          fi
 
