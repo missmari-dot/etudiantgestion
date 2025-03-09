@@ -4,10 +4,10 @@ metadata:
   name: prometheus-service
   namespace: monitoring
 spec:
-  type: LoadBalancer    # Ou NodePort si tu n'as pas de LB
+  type: NodePort    # Ou NodePort si tu n'as pas de LB
   ports:
-    - port: 9090
-      targetPort: 9090
+    - port: 9098
+      targetPort: 9098
       protocol: TCP
   selector:
     app: prometheus

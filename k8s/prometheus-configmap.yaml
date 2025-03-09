@@ -13,9 +13,9 @@ data:
         kubernetes_sd_configs:
           - role: pod
         relabel_configs:
-          # On ne garde que les pods qui ont le label 'app=gestion-prof-service'
+
           - source_labels: [__meta_kubernetes_pod_label_app]
             action: keep
-            regex: gestion-prof-service
+            regex: gestion-classe
 
       # 
